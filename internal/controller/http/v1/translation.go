@@ -6,23 +6,34 @@ import (
 	"github.com/akhmettolegen/translator/internal/usecase"
 	resp "github.com/akhmettolegen/translator/pkg/api/response"
 	"github.com/akhmettolegen/translator/pkg/logger"
+	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"net/http"
 )
 
-type translationRoutes struct {
-	t usecase.Translation
-	l logger.Interface
+type TranslationRoutes struct {
+	translation usecase.Translation
+	logger      logger.Interface
 }
 
-func newTranslationRoutes(handler *gin.RouterGroup, t usecase.Translation, l logger.Interface) {
-	r := &translationRoutes{t, l}
-
-	h := handler.Group("/translation")
-	{
-		h.GET("/history", r.history)
-		h.POST("/do-translate", r.doTranslate)
+func NewTranslationRoutes(
+	t usecase.Translation,
+	l logger.Interface) *TranslationRoutes {
+	return &TranslationRoutes{
+		translation: t,
+		logger:      l,
 	}
+}
+
+func (rs *TranslationRoutes) Routes() chi.Router {
+	r := chi.NewRouter()
+
+	r.Group(func(r chi.Router) {
+		r.Post("/", rs.doTranslate)
+		r.Get("/history", rs.history)
+	})
+
+	return r
 }
 
 type historyResponse struct {
@@ -38,12 +49,11 @@ type historyResponse struct {
 // @Success     200 {object} historyResponse
 // @Failure     500 {object} response
 // @Router      /translation/history [get]
-func (c *translationRoutes) history(w http.ResponseWriter, r *http.Request) {
+func (rs *TranslationRoutes) history(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	translations, err := c.t.History(ctx)
+	translations, err := rs.translation.History(ctx)
 	if err != nil {
-		c.l.Error(err, "http - v1 - history")
-		errorResponse(ctx, http.StatusInternalServerError, "database problems")
+		rs.logger.Error(err, "http - v1 - history")
 		render.JSON(w, r, resp.Error("internal error"))
 
 		return
@@ -68,18 +78,17 @@ type doTranslateRequest struct {
 // @Success     200 {object} entity.Translation
 // @Failure     400 {object} response
 // @Failure     500 {object} response
-// @Router      /translation/do-translate [post]
-func (c *translationRoutes) doTranslate(w http.ResponseWriter, r *http.Request) {
-	const op = "handlers.url.save.New"
+// @Router      /translation [post]
+func (rs *TranslationRoutes) doTranslate(w http.ResponseWriter, r *http.Request) {
 	var request doTranslateRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		c.l.Error(err, op)
+		rs.logger.Error(err, "http - v1 - doTranslate")
 		render.JSON(w, r, resp.Error("invalid request body"))
 
 		return
 	}
 
-	translation, err := c.t.Translate(
+	translation, err := rs.translation.Translate(
 		r.Context(),
 		entity.Translation{
 			Source:      request.Source,
@@ -88,7 +97,7 @@ func (c *translationRoutes) doTranslate(w http.ResponseWriter, r *http.Request) 
 		},
 	)
 	if err != nil {
-		c.l.Error(err, op)
+		rs.logger.Error(err, "http - v1 - doTranslate")
 		render.JSON(w, r, resp.Error("translation service problems"))
 
 		return

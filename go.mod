@@ -5,11 +5,13 @@ go 1.21.0
 require (
 	github.com/Conight/go-googletrans v0.2.4
 	github.com/Masterminds/squirrel v1.5.4
+	github.com/go-chi/chi v1.5.5
 	github.com/go-chi/render v1.0.3
 	github.com/golang-migrate/migrate/v4 v4.16.2
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v4 v4.18.1
 	github.com/rs/zerolog v1.31.0
+	github.com/sirupsen/logrus v1.9.2
 )
 
 require (

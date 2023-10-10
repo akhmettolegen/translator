@@ -1,20 +1,8 @@
 package response
 
-import (
-	"github.com/go-chi/render"
-	"net/http"
-)
-
-//
-//type Response struct {
-//	Status string `json:"status"`
-//	Error  string `json:"error,omitempty"`
-//}
-
 type Response struct {
-	Err            error    `json:"-"` // низкоуровневая ошибка исполнения
-	HTTPStatusCode int      `json:"-"` // HTTP статус код
-	ErrorMessage   *Details `json:"error"`
+	Status string `json:"status"`
+	Error  string `json:"error,omitempty"`
 }
 
 type Details struct {
@@ -37,17 +25,5 @@ func Error(msg string) Response {
 	return Response{
 		Status: StatusError,
 		Error:  msg,
-	}
-}
-
-func InternalError(err error) render.Renderer {
-	return &Response{
-		Err:            err,
-		HTTPStatusCode: http.StatusInternalServerError,
-		ErrorMessage: &Details{
-			AppCode:     http.StatusInternalServerError,
-			StatusText:  "Internal Server Error",
-			MessageText: err.Error(),
-		},
 	}
 }
