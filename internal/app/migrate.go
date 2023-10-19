@@ -1,9 +1,8 @@
-//go:build migrate
-
 package app
 
 import (
 	"errors"
+	"github.com/golang-migrate/migrate/v4"
 	"log"
 	"os"
 	"time"
