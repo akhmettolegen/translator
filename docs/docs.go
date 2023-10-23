@@ -59,13 +59,13 @@ var doc = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.Response"
+                            "$ref": "#/definitions/v1.Response"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.Response"
+                            "$ref": "#/definitions/v1.Response"
                         }
                     }
                 }
@@ -95,7 +95,7 @@ var doc = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.Response"
+                            "$ref": "#/definitions/v1.Response"
                         }
                     }
                 }
@@ -124,13 +124,10 @@ var doc = `{
                 }
             }
         },
-        "response.Response": {
+        "v1.Response": {
             "type": "object",
             "properties": {
                 "error": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 }
             }

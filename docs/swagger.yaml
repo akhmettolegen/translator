@@ -15,11 +15,9 @@ definitions:
         example: text for translation
         type: string
     type: object
-  response.Response:
+  v1.Response:
     properties:
       error:
-        type: string
-      status:
         type: string
     type: object
   v1.doTranslateRequest:
@@ -74,11 +72,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.Response'
+            $ref: '#/definitions/v1.Response'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.Response'
+            $ref: '#/definitions/v1.Response'
       summary: Translate
       tags:
       - translation
@@ -98,7 +96,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.Response'
+            $ref: '#/definitions/v1.Response'
       summary: Show history
       tags:
       - translation
