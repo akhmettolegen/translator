@@ -20,6 +20,9 @@ swag-v1: ### swag init
 test: ### run test
 	go test -v -cover -race ./internal/...
 
+integration-test: ### run integration-test
+	go clean -testcache && go test -v ./integration-test/...
+
 mock: ### run mockgen
 	go install github.com/golang/mock/mockgen@latest
 	mockgen -source ./internal/usecase/interfaces.go -package usecase_test > ./internal/usecase/mocks_test.go
