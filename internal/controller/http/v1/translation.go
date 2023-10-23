@@ -47,7 +47,7 @@ type historyResponse struct {
 // @Accept      json
 // @Produce     json
 // @Success     200 {object} historyResponse
-// @Failure     500 {object} response
+// @Failure     500 {object} response.Response
 // @Router      /translation/history [get]
 func (rs *TranslationRoutes) history(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -76,8 +76,8 @@ type doTranslateRequest struct {
 // @Produce     json
 // @Param       request body doTranslateRequest true "Set up translation"
 // @Success     200 {object} entity.Translation
-// @Failure     400 {object} response
-// @Failure     500 {object} response
+// @Failure     400 {object} response.Response
+// @Failure     500 {object} response.Response
 // @Router      /translation [post]
 func (rs *TranslationRoutes) doTranslate(w http.ResponseWriter, r *http.Request) {
 	var request doTranslateRequest

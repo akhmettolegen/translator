@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/akhmettolegen/translator/config"
+	_ "github.com/akhmettolegen/translator/docs"
 	v1 "github.com/akhmettolegen/translator/internal/controller/http/v1"
 	"github.com/akhmettolegen/translator/internal/usecase"
 	"github.com/akhmettolegen/translator/internal/usecase/repo"
@@ -12,6 +13,7 @@ import (
 	"github.com/akhmettolegen/translator/pkg/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	"os"
 	"os/signal"
@@ -57,6 +59,12 @@ func Run(cfg *config.Config) {
 	}
 }
 
+// NewRouter -.
+// Swagger spec:
+// @title       Translator API
+// @description Translation service
+// @version     1.0
+// @BasePath    /v1
 func setupRouter(l logger.Interface, t usecase.Translation) chi.Router {
 	router := chi.NewRouter()
 	// Options
@@ -65,7 +73,7 @@ func setupRouter(l logger.Interface, t usecase.Translation) chi.Router {
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
 
-	// TODO: Swagger
+	router.Mount("/swagger", httpSwagger.WrapHandler)
 
 	router.Get("/health", func(w http.ResponseWriter, _ *http.Request) { w.WriteHeader(http.StatusOK) })
 
