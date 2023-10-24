@@ -25,6 +25,7 @@ func init() {
 
 	databaseURL += "?sslmode=disable"
 
+	log.Println("databaseURL:", databaseURL)
 	var (
 		attempts = _defaultAttempts
 		err      error
