@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:14.2
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'pass'
+      POSTGRES_DB: 'translator'
+    ports:
+      - "5434:5432"
+
+  app:
+    build: .
+    container_name: app
+    image: app
+    environment:
+      PG_URL: 'postgres://user:pass@postgres:5434/translator'
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+
+  integration:
+    build:
+      context: .
+      dockerfile: integration-test/Dockerfile
+    container_name: integration
+    image: integration
+    depends_on:
+      - app
+
+volumes:
+  pg-data:
