@@ -20,7 +20,7 @@ services:
     environment:
       PG_URL: 'postgres://user:pass@host.docker.internal:5433/translator'
     ports:
-      - "8082:8082"
+      - "8080:8080"
     depends_on:
       - postgres
 
