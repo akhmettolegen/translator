@@ -12,7 +12,7 @@ import (
 
 const (
 	// Attempts connection
-	host       = "localhost:8082"
+	host       = "localhost:8080"
 	healthPath = "http://" + host + "/health"
 	attempts   = 20
 
