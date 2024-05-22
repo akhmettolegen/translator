@@ -15,3 +15,4 @@ postgres:
 
 some_filed: 'some_value'
 another_field: 'another_value'
+one_more_field: 'one_more_value'
