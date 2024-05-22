@@ -12,7 +12,3 @@ logger:
 postgres:
   pool_max: 2
   url: 'postgres://user:pass@localhost:5433/translator?sslmode=disable'
-
-some_filed: 'some_value'
-another_field: 'another_value'
-one_more_field: 'one_more_value'
